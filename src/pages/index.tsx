@@ -10,6 +10,8 @@ import TodoListView from '@/components/TodoListView';
 import { todoListState } from '@/stores/atoms';
 import memoryLocalStorage from '@/stores/memoryLocalStorage';
 
+import jsonData from './api/data.json';
+
 type HomeProps = {
   newsData: {
     currentPage: number;
@@ -45,11 +47,20 @@ export default function Home({ newsData }: HomeProps) {
   );
 }
 
-async function fetchNewsData({ page, count }: { page: number; count: number }) {
-  return await fetch(`http://127.0.0.1:3000/api/news?page=${page}&count=${count}`).then((res) => res.json());
+export async function getServerSideProps() {
+  // NOTE:
+  const newsData = await getNewsData({ page: 1, count: 10 });
+  return { props: { newsData: newsData } };
 }
 
-export async function getServerSideProps() {
-  const newsData = await fetchNewsData({ page: 1, count: 10 });
-  return { props: { newsData: newsData } };
+type Data = {
+  currentPage: number;
+  items: { title: string; press: string; image: string; url: string; date: string }[];
+};
+
+// Note: 원래라면 외부 API 호출 부분이지만 해당 과제에서는 mock 데이터 사용으로 대체합니다.
+export async function getNewsData({ page, count }: { page: number; count: number }): Promise<Data> {
+  const from = (page - 1) * count;
+  const to = from + count;
+  return { currentPage: page, items: jsonData.slice(from, to) };
 }
