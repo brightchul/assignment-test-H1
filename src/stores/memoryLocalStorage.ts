@@ -56,6 +56,14 @@ class MemoryLocalStorage {
     }
     delete this.data[key];
   }
+
+  getItemCount(key: string) {
+    if (!this.hasItem(key)) {
+      return 0;
+    }
+    const objectList = JSON.parse(this.getItem(key) as string) ?? [];
+    return objectList.length;
+  }
 }
 
 const memoryLocalStorage = new MemoryLocalStorage();
