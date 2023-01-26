@@ -1,14 +1,10 @@
 import Head from 'next/head';
-import React, { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
 
 import Container from '@/components/Container';
 import HomeTitle from '@/components/HomeTitle';
 import NewsList from '@/components/NewsList';
 import { NewsItem } from '@/components/NewsList/types';
 import TodoListView from '@/components/TodoListView';
-import { todoListState } from '@/stores/atoms';
-import memoryLocalStorage from '@/stores/memoryLocalStorage';
 
 import jsonData from './api/data.json';
 
@@ -20,17 +16,6 @@ type HomeProps = {
 };
 
 export default function Home({ newsData }: HomeProps) {
-  const setTodoList = useSetRecoilState(todoListState);
-
-  useEffect(() => {
-    memoryLocalStorage.setWindow();
-    memoryLocalStorage.sync('todolist');
-    const one = memoryLocalStorage.getItem('todolist');
-    if (one) {
-      setTodoList(() => [...JSON.parse(one)]);
-    }
-  }, [setTodoList]);
-
   return (
     <>
       <Head>
@@ -48,7 +33,6 @@ export default function Home({ newsData }: HomeProps) {
 }
 
 export async function getServerSideProps() {
-  // NOTE:
   const newsData = await getNewsData({ page: 1, count: 10 });
   return { props: { newsData: newsData } };
 }

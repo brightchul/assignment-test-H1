@@ -7,7 +7,6 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import Container from '@/components/Container';
 import SelectWeekDay from '@/components/SelectWeekDay';
 import { todoListState } from '@/stores/atoms';
-import memoryLocalStorage from '@/stores/memoryLocalStorage';
 import { selectTodoItemById } from '@/stores/selectors';
 import { RepeatedDay } from '@/stores/types';
 
@@ -51,16 +50,8 @@ export default function UpdateTodo() {
   });
 
   useEffect(() => {
-    memoryLocalStorage.setWindow();
-    memoryLocalStorage.sync('todolist');
-    const one = memoryLocalStorage.getItem('todolist');
-
-    if (one && !todoItem) {
-      setTodoList(() => [...JSON.parse(one)]);
-    }
     if (todoItem) {
-      const defaultValue = { title: todoItem?.title, content: todoItem?.content };
-      reset(defaultValue);
+      reset({ title: todoItem?.title, content: todoItem?.content });
       setRepeatedDayList(repeatedDayList.map((_, idx) => todoItem.repeatedDay.includes(idx)));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

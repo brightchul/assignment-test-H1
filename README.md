@@ -32,11 +32,21 @@ src
 │   ├── HomeTitle
 │   ├── NewsList
 │   ├── SelectWeekDay
+│   ├── SyncLocalStorage
 │   └── TodoListView
 ├── pages
+│   ├── _app.tsx
+│   ├── _document.tsx
 │   ├── add-todo
 │   ├── api
+│   ├── index.tsx
 │   └── update-todo
 ├── stores
+│   ├── atoms.ts
+│   ├── memoryLocalStorage.ts
+│   ├── selectors.ts
+│   └── types.ts
 └── styles
+    └── globals.css
+
 ```
