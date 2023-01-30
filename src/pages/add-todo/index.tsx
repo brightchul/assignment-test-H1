@@ -3,11 +3,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import Container from '@/components/Container';
 import SelectWeekDay from '@/components/SelectWeekDay';
-import { getTodoId, todoListState } from '@/stores/atoms';
+import { todoListState } from '@/stores/atoms';
+import { getTodoItemLastId } from '@/stores/selectors';
 import { RepeatedDay } from '@/stores/types';
 
 export default function AddTodo() {
@@ -18,6 +19,8 @@ export default function AddTodo() {
   const { register, handleSubmit, formState } = useForm({ defaultValues: { title: '', content: '' } });
 
   const [repeatedDayList, setRepeatedDayList] = useState([false, false, false, false, false, false, false]);
+
+  const newId = useRecoilValue(getTodoItemLastId) + 1;
 
   const addTodo = ({ title, content }: { title: string; content: string }) => {
     const repeatedDay: RepeatedDay[] = repeatedDayList
@@ -32,7 +35,7 @@ export default function AddTodo() {
         createdAt: dayjs().toString(),
         repeatedDay,
         isComplete: false,
-        id: getTodoId(),
+        id: newId,
       },
     ]);
     router.push('/');

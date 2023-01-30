@@ -30,3 +30,11 @@ export const selectTodoItemById = selectorFamily({
       return entireTodoList.find(({ id }) => id === todoId);
     },
 });
+
+export const getTodoItemLastId = selector({
+  key: 'getTodoItemLastId',
+  get: ({ get }) => {
+    const entireTodoList = get(todoListState);
+    return entireTodoList.reduce((newId, todoItem) => Math.max(newId, todoItem.id), 0);
+  },
+});

@@ -5,10 +5,6 @@ import { Todo } from './types';
 
 const initData: Todo[] = [];
 
-export function getTodoId() {
-  return memoryLocalStorage.getItemCount('todolist');
-}
-
 // NOTE(@brightchul): Recoil을 next.js 사용시 hot module replacement로 인해 동일 키 생성되는 문제 우회
 export const todoListState = atom<Todo[]>({
   key: `todoListState/${Date.now()}`,
