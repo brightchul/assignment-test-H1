@@ -4,9 +4,10 @@ import { selector, selectorFamily } from 'recoil';
 
 import { todoListState } from './atoms';
 import { Todo } from './types';
+import { atomKey } from './util';
 
 export const todayTodoListState = selector({
-  key: 'todayTodoListState',
+  key: atomKey('todayTodoListState'),
   get: ({ get }) => {
     dayjs.extend(isToday);
     const dayNumber = dayjs().day();
@@ -22,7 +23,7 @@ export const todayTodoListState = selector({
 });
 
 export const selectTodoItemById = selectorFamily({
-  key: 'todoItemByIdState',
+  key: atomKey('todoItemByIdState'),
   get:
     (todoId: number) =>
     ({ get }) => {
@@ -32,7 +33,7 @@ export const selectTodoItemById = selectorFamily({
 });
 
 export const getTodoItemLastId = selector({
-  key: 'getTodoItemLastId',
+  key: atomKey('getTodoItemLastId'),
   get: ({ get }) => {
     const entireTodoList = get(todoListState);
     return entireTodoList.reduce((newId, todoItem) => Math.max(newId, todoItem.id), 0);
