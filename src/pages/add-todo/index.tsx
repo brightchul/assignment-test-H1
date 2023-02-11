@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -18,7 +18,9 @@ export default function AddTodo() {
 
   const { register, handleSubmit, formState } = useForm({ defaultValues: { title: '', content: '' } });
 
-  const [repeatedDayList, setRepeatedDayList] = useState([false, false, false, false, false, false, false]);
+  const [repeatedDayList, setRepeatedDayList] = useState<boolean[]>([false, false, false, false, false, false, false]);
+
+  const setRepeatedDayListMemorize = useCallback(setRepeatedDayList, [setRepeatedDayList]);
 
   const newId = useRecoilValue(getTodoItemLastId) + 1;
 
@@ -67,7 +69,7 @@ export default function AddTodo() {
         </div>
         <div>
           <p className="text-xl font-bold ">반복</p>
-          <SelectWeekDay repeatedDayList={repeatedDayList} setRepoeatedDayList={setRepeatedDayList} />
+          <SelectWeekDay repeatedDayList={repeatedDayList} setRepeatedDayList={setRepeatedDayListMemorize} />
         </div>
         <div className="flex-grow"></div>
         <button
