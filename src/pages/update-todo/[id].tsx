@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -21,6 +21,7 @@ export default function UpdateTodo() {
   const setTodoList = useSetRecoilState(todoListState);
 
   const [repeatedDayList, setRepeatedDayList] = useState(repeatedDayInitList);
+  const setRepeatedDayListMemorize = useCallback(setRepeatedDayList, [setRepeatedDayList]);
 
   const updateTodo = ({ title, content }: { title: string; content: string | undefined }) => {
     const repeatedDay: RepeatedDay[] = repeatedDayList
@@ -83,7 +84,7 @@ export default function UpdateTodo() {
         </div>
         <div>
           <p className="text-xl font-bold ">반복</p>
-          <SelectWeekDay repeatedDayList={repeatedDayList} setRepoeatedDayList={setRepeatedDayList} />
+          <SelectWeekDay repeatedDayList={repeatedDayList} setRepeatedDayList={setRepeatedDayListMemorize} />
         </div>
         <div className="flex-grow"></div>
         <button
